@@ -63,6 +63,7 @@ namespace Opgave1
         {
             for (int i = 0; i <= 10; i++)
             {
+                // Send en opgave ind til Threadpoolen
                 ThreadPool.QueueUserWorkItem(Process);
             }
         }
