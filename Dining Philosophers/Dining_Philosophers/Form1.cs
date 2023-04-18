@@ -52,6 +52,7 @@ namespace Dining_Philosophers
             for (int i = 0; i < 5; i++)
             {
                 Fork fork = new Fork(); // Vi skal pille lidt i constructors her
+                fork.Id = i;
                 forksList.Add(fork);
             }
 
@@ -59,37 +60,43 @@ namespace Dining_Philosophers
             for (int i = 0; i < 5; i++)
             {
                 Philosopher philosopher = new Philosopher();
-                philosopher.LeftHand = forksList[1];
+                philosopher.Id = i;
+                philosopher.LeftHand = forksList[i];
                 
-                if (i == 5)
+                if (i == 4)
                 {
                     philosopher.RightHand = forksList[0];
                 }
                 else { 
                     philosopher.RightHand = forksList[i + 1];
                 }
+                
                 philosophersList.Add(philosopher);
             }
 
-
+             //DEBUG
                 foreach (Philosopher philosopher in philosophersList)
                 {
                     string stats = $@"
 Philosopher #: {philosopher.Id}
-Right hand fork: {philosopher.RightHand}
-Left hand fork: {philosopher.LeftHand}
+Right hand fork: {philosopher.RightHand.Id.ToString()}
+Left hand fork: {philosopher.LeftHand.Id.ToString()}
 Next hungry: {philosopher.NextHungry}
 State: {philosopher.State}
 ---------------------------------------------------------
 ";
 
-                //Console.WriteLine(stats);
-
                 MessageBox.Show(stats);
-            }
-            }
 
-        
+
+            }
+                
+        }
+
+        private void startButton_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 
     class Philosopher
@@ -97,7 +104,7 @@ State: {philosopher.State}
         private int _id;
         private Fork _rightHand;
         private Fork _leftHand;
-        private float _nextHungry;
+        private int _nextHungry;
         private string _state;
 
         public int Id
@@ -115,20 +122,36 @@ State: {philosopher.State}
             get { return _leftHand; }
             set { _leftHand = value; }
         }
-        public float NextHungry
+        public int NextHungry
         {
-            get { return _nextHungry; }
-            set { _nextHungry = value; }
+            get { return ThinkAboutEating(); }
+            //set { _nextHungry = value; }
         }
         public string State
         {
             get { return _state; }
             set { _state = value; }
         }
+
+        public int ThinkAboutEating() {
+
+            int nextHungryInt;
+            Random rnd = new Random();
+            nextHungryInt = rnd.Next(0, 100);
+            return nextHungryInt;
+        }
+        
     }
 
     class Fork
     {
+        private int _id;
+
+        public int Id
+        {
+            get { return _id; }
+            set { _id = value; }
+        }
 
     }
 
