@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -59,13 +60,36 @@ namespace Dining_Philosophers
             {
                 Philosopher philosopher = new Philosopher();
                 philosopher.LeftHand = forksList[1];
-                philosopher.RightHand = forksList[i+1];
+                
+                if (i == 5)
+                {
+                    philosopher.RightHand = forksList[0];
+                }
+                else { 
+                    philosopher.RightHand = forksList[i + 1];
+                }
                 philosophersList.Add(philosopher);
             }
 
 
+                foreach (Philosopher philosopher in philosophersList)
+                {
+                    string stats = $@"
+Philosopher #: {philosopher.Id}
+Right hand fork: {philosopher.RightHand}
+Left hand fork: {philosopher.LeftHand}
+Next hungry: {philosopher.NextHungry}
+State: {philosopher.State}
+---------------------------------------------------------
+";
 
-        }
+                //Console.WriteLine(stats);
+
+                MessageBox.Show(stats);
+            }
+            }
+
+        
     }
 
     class Philosopher
@@ -81,12 +105,12 @@ namespace Dining_Philosophers
             get { return _id; }
             set { _id = value; }
         }
-        public int RightHand
+        public Fork RightHand
         {
             get { return _rightHand; }
             set { _rightHand = value; }
         }
-        public int LeftHand
+        public Fork LeftHand
         {
             get { return _leftHand; }
             set { _leftHand = value; }
